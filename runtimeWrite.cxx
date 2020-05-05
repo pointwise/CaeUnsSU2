@@ -1,6 +1,6 @@
 /****************************************************************************
 *
-* Copyright (c) 2012-2018 Pointwise, Inc.
+* Copyright (c) 2012-2020 Pointwise, Inc.
 * All rights reserved.
 *
 * This sample Pointwise plugin is not supported by Pointwise, Inc.
@@ -134,7 +134,11 @@ writeElemData(CAEP_RTITEM &rti, const PWGM_ELEMDATA &ed,
         break;
     case SU2_ELEMTYPE_QUAD:
         ret = (0 < fprintf(rti.fp, "%2i  %4lu %4lu %4lu %4lu", suType,
-            LU(ed.index[0]), LU(ed.index[1]), LU(ed.index[2]), LU(ed.index[3])));
+           LU(ed.index[0]), LU(ed.index[1]), LU(ed.index[2]), LU(ed.index[3])));
+        break;
+    case SU2_ELEMTYPE_TET:
+        ret = (0 < fprintf(rti.fp, "%2i  %4lu %4lu %4lu %4lu", suType,
+           LU(ed.index[0]), LU(ed.index[1]), LU(ed.index[2]), LU(ed.index[3])));
         break;
     case SU2_ELEMTYPE_PYRAMID:
         ret = (0 < fprintf(rti.fp, "%2i  %4lu %4lu %4lu %4lu %4lu", suType,
@@ -142,9 +146,12 @@ writeElemData(CAEP_RTITEM &rti, const PWGM_ELEMDATA &ed,
             LU(ed.index[4])));
         break;
     case SU2_ELEMTYPE_WEDGE:
+        // PW-22662 Prism node ordering incorrect for SU2
+        // SU2 expects the normal of f(3,4,5) to point towards f(0,1,2) which is
+        // opposite the PW scheme of f(0,1,2) --> f(3,4,5)
         ret = (0 < fprintf(rti.fp, "%2i  %4lu %4lu %4lu %4lu %4lu %4lu", suType,
-            LU(ed.index[0]), LU(ed.index[1]), LU(ed.index[2]), LU(ed.index[3]),
-            LU(ed.index[4]), LU(ed.index[5])));
+            LU(ed.index[3]), LU(ed.index[4]), LU(ed.index[5]),
+            LU(ed.index[0]), LU(ed.index[1]), LU(ed.index[2])));
         break;
     case SU2_ELEMTYPE_HEX:
         ret = (0 < fprintf(rti.fp, "%2i  %4lu %4lu %4lu %4lu %4lu %4lu %4lu"
