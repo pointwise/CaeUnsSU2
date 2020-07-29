@@ -1,6 +1,6 @@
-## Building the SU2 Plugin
+## Building the SU2 CAE Export Plugin
 
-To build the **SU2** plugin you must integrate the source code from 
+To build the **SU2** CAE export plugin you must integrate the source code from 
 this repository into your local PluginSDK installation.
 
 This plugin was created with the `mkplugin` options `-c` and `-caeu`.
